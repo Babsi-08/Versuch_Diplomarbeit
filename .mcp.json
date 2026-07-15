@@ -7,6 +7,15 @@
                 "/home/barbara/workspace/babsi_projekt/artisan",
                 "boost:mcp"
             ]
+        },
+        "instruckt": {
+            "command": "wsl.exe",
+            "args": [
+                "/home/barbara/.config/herd-lite/bin/php",
+                "/home/barbara/workspace/babsi_projekt/artisan",
+                "mcp:start",
+                "instruckt"
+            ]
         }
     }
 }
