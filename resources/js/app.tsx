@@ -5,6 +5,11 @@ import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 
+// instruckt läuft nur im Dev-Server (apply: 'serve'); im Production-Build nicht laden
+if (import.meta.env.DEV) {
+    import('virtual:instruckt');
+}
+
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
