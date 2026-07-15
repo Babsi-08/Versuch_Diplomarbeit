@@ -27,7 +27,7 @@ class TimeEntryController extends Controller
             'kommen' => now(),
         ]);
 
-        return redirect('/')->with('status', 'Eingestempelt!')->with('typ', 'kommen');
+        return redirect()->route('stempeln')->with('status', 'Eingestempelt!')->with('typ', 'kommen');
     }
 
     public function gehen(Request $request)
@@ -41,12 +41,13 @@ class TimeEntryController extends Controller
             $entry->update(['gehen' => now()]);
         }
 
-        return redirect('/')->with('status', 'Ausgestempelt!')->with('typ', 'gehen');
+        return redirect()->route('stempeln')->with('status', 'Ausgestempelt!')->with('typ', 'gehen');
     }
 
     public function uebersicht()
     {
         $entries = TimeEntry::with('employee')->latest()->get();
+
         return view('uebersicht', compact('entries'));
     }
 }
