@@ -23,8 +23,12 @@ Voraussetzung: **Docker Desktop** läuft und die WSL-Integration für diese Dist
 ./vendor/bin/sail artisan <befehl>
 
 # Frontend / Vite
-./vendor/bin/sail npm install
+./vendor/bin/sail npm install # wenn jmd neue pakete installiert hat
 ./vendor/bin/sail npm run dev
+
+# Backend / Composar pakete
+composer install
+
 
 # Tests
 ./vendor/bin/sail artisan test
