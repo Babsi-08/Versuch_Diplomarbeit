@@ -2,27 +2,23 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
-interface Employee {
-    id: number;
-    name: string;
-}
-
-export default function Stempeln({ employees }: { employees: Employee[] }) {
-    const { flash } = usePage().props as unknown as {
+export default function Stempeln() {
+    const { auth, flash } = usePage().props as unknown as {
+        auth: { user: { name: string } };
         flash: { status: string | null; typ: string | null };
     };
 
-    const kommenForm = useForm({ employee_id: '' });
-    const gehenForm = useForm({ employee_id: '' });
+    const kommenForm = useForm({});
+    const gehenForm = useForm({});
 
     const submitKommen: FormEventHandler = (e) => {
         e.preventDefault();
-        kommenForm.post(route('kommen'), { onSuccess: () => kommenForm.reset() });
+        kommenForm.post(route('kommen'));
     };
 
     const submitGehen: FormEventHandler = (e) => {
         e.preventDefault();
-        gehenForm.post(route('gehen'), { onSuccess: () => gehenForm.reset() });
+        gehenForm.post(route('gehen'));
     };
 
     return (
@@ -37,6 +33,13 @@ export default function Stempeln({ employees }: { employees: Employee[] }) {
 
             <div className="py-12">
                 <div className="mx-auto max-w-xl space-y-6 sm:px-6 lg:px-8">
+                    <p className="text-center text-lg text-gray-600">
+                        Angemeldet als{' '}
+                        <span className="font-semibold text-gray-900">
+                            {auth.user.name}
+                        </span>
+                    </p>
+
                     {flash?.status && (
                         <div
                             className={
@@ -50,65 +53,27 @@ export default function Stempeln({ employees }: { employees: Employee[] }) {
                         </div>
                     )}
 
-                    {/* Ich komme */}
-                    <form
-                        onSubmit={submitKommen}
-                        className="rounded-2xl bg-white p-8 shadow-sm"
-                    >
-                        <label className="mb-3 block text-lg font-semibold text-gray-700">
+                    <form onSubmit={submitKommen} className="rounded-2xl bg-white p-8 shadow-sm">
+                        <p className="mb-4 text-lg font-semibold text-gray-700">
                             Ich komme
-                        </label>
-                        <select
-                            value={kommenForm.data.employee_id}
-                            onChange={(e) =>
-                                kommenForm.setData('employee_id', e.target.value)
-                            }
-                            required
-                            className="mb-5 w-full rounded-lg border-2 border-pink-100 px-4 py-3 text-lg focus:border-pink-300 focus:ring-pink-300"
-                        >
-                            <option value="">– Mitarbeiter wählen –</option>
-                            {employees.map((employee) => (
-                                <option key={employee.id} value={employee.id}>
-                                    {employee.name}
-                                </option>
-                            ))}
-                        </select>
+                        </p>
                         <button
                             type="submit"
                             disabled={kommenForm.processing}
-                            className="w-full rounded-xl bg-green-300 py-4 text-xl font-bold text-gray-800 transition hover:bg-green-400 disabled:opacity-50"
+                            className="w-full rounded-xl bg-green-200 py-4 text-xl font-bold text-gray-800 transition hover:bg-green-300 disabled:opacity-50"
                         >
                             Kommen
                         </button>
                     </form>
 
-                    {/* Ich gehe */}
-                    <form
-                        onSubmit={submitGehen}
-                        className="rounded-2xl bg-white p-8 shadow-sm"
-                    >
-                        <label className="mb-3 block text-lg font-semibold text-gray-700">
+                    <form onSubmit={submitGehen} className="rounded-2xl bg-white p-8 shadow-sm">
+                        <p className="mb-4 text-lg font-semibold text-gray-700">
                             Ich gehe
-                        </label>
-                        <select
-                            value={gehenForm.data.employee_id}
-                            onChange={(e) =>
-                                gehenForm.setData('employee_id', e.target.value)
-                            }
-                            required
-                            className="mb-5 w-full rounded-lg border-2 border-pink-100 px-4 py-3 text-lg focus:border-pink-300 focus:ring-pink-300"
-                        >
-                            <option value="">– Mitarbeiter wählen –</option>
-                            {employees.map((employee) => (
-                                <option key={employee.id} value={employee.id}>
-                                    {employee.name}
-                                </option>
-                            ))}
-                        </select>
+                        </p>
                         <button
                             type="submit"
                             disabled={gehenForm.processing}
-                            className="w-full rounded-xl bg-pink-300 py-4 text-xl font-bold text-gray-800 transition hover:bg-pink-400 disabled:opacity-50"
+                            className="w-full rounded-xl bg-pink-200 py-4 text-xl font-bold text-gray-800 transition hover:bg-pink-300 disabled:opacity-50"
                         >
                             Gehen
                         </button>

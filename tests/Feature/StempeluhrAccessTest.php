@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Employee;
 use App\Models\TimeEntry;
 use App\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -24,13 +23,12 @@ test('eingeloggte nutzer sehen die stempeluhr als react-seite', function () {
         ->assertInertia(fn (Assert $page) => $page->component('Uebersicht'));
 });
 
-test('kommen erstellt einen zeiteintrag und leitet zur stempeluhr zurück', function () {
-    $this->actingAs(User::factory()->create());
-    $employee = Employee::create(['name' => 'Testperson']);
+test('kommen erstellt einen zeiteintrag für den eingeloggten nutzer', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
 
-    $this->post('/kommen', ['employee_id' => $employee->id])
-        ->assertRedirect(route('stempeln'));
+    $this->post('/kommen')->assertRedirect(route('stempeln'));
 
-    expect(TimeEntry::where('employee_id', $employee->id)->whereNotNull('kommen')->exists())
+    expect(TimeEntry::where('user_id', $user->id)->whereNotNull('kommen')->exists())
         ->toBeTrue();
 });

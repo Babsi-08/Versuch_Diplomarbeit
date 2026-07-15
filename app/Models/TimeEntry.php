@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class TimeEntry extends Model
 {
-     protected $fillable = ['employee_id', 'kommen', 'gehen'];
+    protected $fillable = ['user_id', 'kommen', 'gehen'];
 
     protected $casts = [
         'kommen' => 'datetime',
         'gehen' => 'datetime',
     ];
 
-    public function employee()
+    public function user()
     {
-        return $this->belongsTo(Employee::class);
+        return $this->belongsTo(User::class);
     }
 }
