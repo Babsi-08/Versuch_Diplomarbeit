@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
         ];
 
         foreach ($users as $user) {
-            User::updateOrCreate(
+            $model = User::updateOrCreate(
                 ['email' => $user['email']],
                 [
                     'name' => $user['name'],
@@ -28,6 +28,8 @@ class UserSeeder extends Seeder
                     'email_verified_at' => now(),
                 ],
             );
+
+            $model->assignRole('Admin');
         }
     }
 }
