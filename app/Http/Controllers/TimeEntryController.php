@@ -5,19 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\TimeEntry;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TimeEntryController extends Controller
 {
     public function index()
     {
-        $employees = Employee::all();
-
-        $latestEntries = TimeEntry::with('employee')
-            ->latest()
-            ->take(5)
-            ->get();
-
-        return view('stempeln', compact('employees', 'latestEntries'));
+        return Inertia::render('Stempeln', [
+            'employees' => Employee::orderBy('name')->get(['id', 'name']),
+        ]);
     }
 
     public function kommen(Request $request)
@@ -46,8 +42,20 @@ class TimeEntryController extends Controller
 
     public function uebersicht()
     {
-        $entries = TimeEntry::with('employee')->latest()->get();
+        $entries = TimeEntry::with('employee')->latest()->get()->map(function (TimeEntry $entry): array {
+            $minutes = $entry->gehen ? (int) $entry->kommen->diffInMinutes($entry->gehen) : null;
 
-        return view('uebersicht', compact('entries'));
+            return [
+                'id' => $entry->id,
+                'employee' => $entry->employee->name,
+                'kommen' => $entry->kommen->format('d.m.Y H:i'),
+                'gehen' => $entry->gehen?->format('d.m.Y H:i'),
+                'dauer' => $minutes !== null ? intdiv($minutes, 60).' Std '.($minutes % 60).' Min' : null,
+            ];
+        });
+
+        return Inertia::render('Uebersicht', [
+            'entries' => $entries,
+        ]);
     }
 }

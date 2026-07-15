@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 
 export default function Dashboard() {
     return (
@@ -20,8 +20,8 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    <a
-                        href="/stempeln"
+                    <Link
+                        href={route('stempeln')}
                         className="block overflow-hidden rounded-lg bg-white shadow-sm transition hover:shadow-md"
                     >
                         <div className="p-6">
@@ -32,7 +32,7 @@ export default function Dashboard() {
                                 Kommen und Gehen erfassen sowie die Übersicht ansehen.
                             </p>
                         </div>
-                    </a>
+                    </Link>
                 </div>
             </div>
         </AuthenticatedLayout>
